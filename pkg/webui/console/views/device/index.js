@@ -90,8 +90,9 @@ import style from './device.styl'
       'description',
       'version_ids',
       'frequency_plan_id',
-      'mac_settings.resets_f_cnt',
+      'mac_settings',
       'resets_join_nonces',
+      'supports_class_b',
       'supports_class_c',
       'supports_join',
       'lorawan_version',
@@ -177,6 +178,16 @@ export default class Device extends React.Component {
       mayScheduleDownlinks,
     } = this.props
 
+    const {
+      name,
+      description,
+      join_server_address,
+      supports_join,
+      root_keys,
+      application_server_address,
+      network_server_address,
+    } = device
+
     const jsConfig = selectJsConfig()
     const hasJs =
       jsConfig.enabled &&
@@ -187,6 +198,10 @@ export default class Device extends React.Component {
     const asConfig = selectAsConfig()
     const hasAs =
       asConfig.enabled && application_server_address === getHostnameFromUrl(asConfig.base_url)
+
+    const nsConfig = selectNsConfig()
+    const hasNs =
+      nsConfig.enabled && network_server_address === getHostnameFromUrl(nsConfig.base_url)
 
     const basePath = `/applications/${appId}/devices/${devId}`
 
@@ -217,6 +232,12 @@ export default class Device extends React.Component {
         name: 'claim-auth-code',
         link: `${basePath}/claim-auth-code`,
         hidden: !hasJs,
+      },
+      {
+        title: sharedMessages.macSettings,
+        name: 'mac-settings',
+        link: `${basePath}/mac-settings`,
+        disabled: !hasNs,
       },
       {
         title: sharedMessages.generalSettings,
@@ -250,6 +271,7 @@ export default class Device extends React.Component {
           {hasJs && (
             <Route path={`${basePath}/claim-auth-code`} component={DeviceClaimAuthenticationCode} />
           )}
+          {hasNs && <Route path={`${basePath}/mac-settings`} component={DeviceMacSettings} />}
           <NotFoundRoute />
         </Switch>
       </React.Fragment>
