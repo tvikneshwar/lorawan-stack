@@ -14,9 +14,9 @@
 
 import * as Yup from 'yup'
 import { defineMessages } from 'react-intl'
+import { ACTIVATION_MODES } from '@ttn-lw/lib/device-utils'
 
-import sharedMessages from '../../../lib/shared-messages'
-import { ACTIVATION_MODES } from '../../lib/device-utils'
+import sharedMessages from '@ttn-lw/lib/shared-messages'
 
 const m = defineMessages({
   validateFreqNumberic: 'All frequency values must be positive integers',

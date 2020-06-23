@@ -14,10 +14,11 @@
 
 import { connect } from 'react-redux'
 
-import { updateDevice } from '../../store/actions/devices'
-import { attachPromise } from '../../store/actions/lib'
-import { selectSelectedApplicationId } from '../../store/selectors/applications'
-import { selectSelectedDevice, selectSelectedDeviceId } from '../../store/selectors/devices'
+import { updateDevice } from '@console/store/actions/devices'
+import { attachPromise } from '@console/store/actions/lib'
+
+import { selectSelectedApplicationId } from '@console/store/selectors/applications'
+import { selectSelectedDevice, selectSelectedDeviceId } from '@console/store/selectors/devices'
 
 const mapStateToProps = state => ({
   devId: selectSelectedDeviceId(state),

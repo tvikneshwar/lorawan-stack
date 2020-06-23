@@ -15,27 +15,28 @@
 import React from 'react'
 import { Col, Row, Container } from 'react-grid-system'
 import { defineMessages } from 'react-intl'
-
-import Form from '../../../components/form'
-import Input from '../../../components/input'
-import Select from '../../../components/select'
-import SubmitBar from '../../../components/submit-bar'
-import SubmitButton from '../../../components/submit-button'
-import IntlHelmet from '../../../lib/components/intl-helmet'
-import Message from '../../../lib/components/message'
-import Checkbox from '../../../components/checkbox'
-import KeyValueMap from '../../../components/key-value-map'
-import toast from '../../../components/toast'
-
-import diff from '../../../lib/diff'
-import sharedMessages from '../../../lib/shared-messages'
-import PropTypes from '../../../lib/prop-types'
 import {
   isDeviceABP,
   isDeviceMulticast,
   isDeviceOTAA,
   ACTIVATION_MODES,
-} from '../../lib/device-utils'
+} from '@ttn-lw/lib/device-utils'
+
+import Form from '@ttn-lw/components/form'
+import Input from '@ttn-lw/components/input'
+import Select from '@ttn-lw/components/select'
+import SubmitBar from '@ttn-lw/components/submit-bar'
+import SubmitButton from '@ttn-lw/components/submit-button'
+import Checkbox from '@ttn-lw/components/checkbox'
+import KeyValueMap from '@ttn-lw/components/key-value-map'
+import toast from '@ttn-lw/components/toast'
+
+import Message from '@ttn-lw/lib/components/message'
+import IntlHelmet from '@ttn-lw/lib/components/intl-helmet'
+
+import diff from '@ttn-lw/lib/diff'
+import sharedMessages from '@ttn-lw/lib/shared-messages'
+import PropTypes from '@ttn-lw/lib/prop-types'
 
 import validationSchema from './validation-schema'
 
