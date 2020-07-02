@@ -31,7 +31,12 @@ import sharedMessages from '@ttn-lw/lib/shared-messages'
 import { mapFormValueToAttributes, mapAttributesToFormValue } from '@console/lib/attributes'
 import { parseLorawanMacVersion } from '@console/lib/device-utils'
 
-import { hasExternalJs, isDeviceOTAA } from '../utils'
+import {
+  hasExternalJs,
+  isDeviceOTAA,
+  usesDefaultComponentAddresses,
+  canUseDefaultComponentAddresses,
+} from '../utils'
 
 import validationSchema from './validation-schema'
 
@@ -107,6 +112,24 @@ const IdentityServerForm = React.memo(props => {
     [validationContext],
   )
 
+  const [useDefaultAddresses, setUseDefaultAddresses] = React.useState(
+    usesDefaultComponentAddresses(device, asConfig, nsConfig, jsConfig),
+  )
+  const handleDefaultAddressesChange = React.useCallback(evt => {
+    const { checked } = evt.target
+    const { setValues, values } = formRef.current
+
+    setUseDefaultAddresses(checked)
+    setExternalJs(checked ? false : values._external_js)
+    setValues(
+      validationSchema.cast({
+        ...values,
+        _external_js: checked ? false : values._external_js,
+        _default_addresses: checked,
+      }),
+    )
+  }, [])
+
   const onFormSubmit = React.useCallback(
     async (values, { resetForm, setSubmitting }) => {
       const castedValues = validationSchema.cast(values, { context: validationContext })
@@ -147,6 +170,12 @@ const IdentityServerForm = React.memo(props => {
   const isOTAA = isDeviceOTAA(device)
   const hasJoinEUI = Boolean(device.ids.join_eui)
   const hasDevEUI = Boolean(device.ids.dev_eui)
+  const enableDefaultAddresses = canUseDefaultComponentAddresses(
+    device,
+    asConfig,
+    nsConfig,
+    jsConfig,
+  )
 
   // We do not want to show the external JS option if the user is on JS only
   // deployment.
@@ -230,35 +259,48 @@ const IdentityServerForm = React.memo(props => {
         component={Input}
       />
       <Form.Field
-        title={sharedMessages.networkServerAddress}
-        placeholder={sharedMessages.addressPlaceholder}
-        name="network_server_address"
-        component={Input}
-        autoComplete="on"
+        component={Checkbox}
+        name="_default_addresses"
+        title={sharedMessages.useDefaultAddresses}
+        onChange={handleDefaultAddressesChange}
+        disable={!enableDefaultAddresses}
       />
-      <Form.Field
-        title={sharedMessages.applicationServerAddress}
-        placeholder={sharedMessages.addressPlaceholder}
-        name="application_server_address"
-        component={Input}
-        autoComplete="on"
-      />
-      {!hideExternalJs && (
+      {!useDefaultAddresses && (
         <>
           <Form.Field
-            title={sharedMessages.useExternalJoinServer}
-            name="_external_js"
-            onChange={handleExternalJsChange}
-            component={Checkbox}
+            title={sharedMessages.networkServerAddress}
+            placeholder={sharedMessages.addressPlaceholder}
+            name="network_server_address"
+            component={Input}
+            autoComplete="on"
           />
           <Form.Field
-            title={sharedMessages.joinServerAddress}
-            placeholder={joinServerAddressPlaceholder}
-            name="join_server_address"
-            disabled={!isOTAA || externalJs}
-            autoComplete="on"
+            title={sharedMessages.applicationServerAddress}
+            placeholder={sharedMessages.addressPlaceholder}
+            name="application_server_address"
             component={Input}
+            autoComplete="on"
           />
+          {isOTAA && (
+            <>
+              {!hideExternalJs && (
+                <Form.Field
+                  title={sharedMessages.useExternalJoinServer}
+                  name="_external_js"
+                  onChange={handleExternalJsChange}
+                  component={Checkbox}
+                />
+              )}
+              <Form.Field
+                title={sharedMessages.joinServerAddress}
+                placeholder={joinServerAddressPlaceholder}
+                name="join_server_address"
+                disabled={!isOTAA || externalJs}
+                autoComplete="on"
+                component={Input}
+              />
+            </>
+          )}
         </>
       )}
       <Form.Field

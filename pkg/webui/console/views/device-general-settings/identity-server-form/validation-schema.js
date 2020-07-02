@@ -34,14 +34,24 @@ const validationSchema = Yup.object()
       .min(2, Yup.passValues(sharedMessages.validateTooShort))
       .max(50, Yup.passValues(sharedMessages.validateTooLong)),
     description: Yup.string().max(2000, Yup.passValues(sharedMessages.validateTooLong)),
-    network_server_address: Yup.string().matches(
-      addressRegexp,
-      sharedMessages.validateAddressFormat,
-    ),
-    application_server_address: Yup.string().matches(
-      addressRegexp,
-      sharedMessages.validateAddressFormat,
-    ),
+    network_server_address: Yup.string()
+      .matches(addressRegexp, sharedMessages.validateAddressFormat)
+      .when(['_default_addresses'], {
+        is: true,
+        then: schema =>
+          schema
+            .transform(value => (nsConfig.enabled ? undefined : value))
+            .default(getHostnameFromUrl(nsConfig.base_url)),
+      }),
+    application_server_address: Yup.string()
+      .matches(addressRegexp, sharedMessages.validateAddressFormat)
+      .when(['_default_addresses'], {
+        is: true,
+        then: schema =>
+          schema
+            .transform(value => (asConfig.enabled ? undefined : value))
+            .default(getHostnameFromUrl(asConfig.base_url)),
+      }),
     _external_js: Yup.boolean(),
     join_server_address: Yup.string().when(['$supportsJoin'], (supportsJoin, schema) => {
       if (!supportsJoin) {
