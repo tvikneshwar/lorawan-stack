@@ -171,22 +171,13 @@ export default class Device extends React.Component {
         supports_join,
         root_keys,
         application_server_address,
+        network_server_address,
       },
       deviceUplinkFrameCount,
       deviceLastSeen,
       env: { siteName },
       mayScheduleDownlinks,
     } = this.props
-
-    const {
-      name,
-      description,
-      join_server_address,
-      supports_join,
-      root_keys,
-      application_server_address,
-      network_server_address,
-    } = device
 
     const jsConfig = selectJsConfig()
     const hasJs =
