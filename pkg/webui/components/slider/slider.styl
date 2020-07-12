@@ -1,0 +1,66 @@
+// Copyright © 2020 The Things Network Foundation, The Things Industries B.V.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+.container
+  margin: auto 0
+
+  :global(.rc-slider-disabled)
+    background-color: transparent
+
+    :global(.rc-slider-dot.rc-slider-dot-active)
+      border-color: $c-input-border
+      opacity: 1
+
+    :global(.rc-slider-track)
+      background-color: $c-input-border
+      opacity: 1
+
+    :global(.rc-slider-rail)
+      background-color: $c-input-border
+      opacity: .6
+
+    :global(.rc-slider-dot)
+      border-color: $c-input-border
+      opacity: .6
+
+    :global(.rc-slider-handle)
+      border-color: $c-input-border
+
+      &:hover,
+      &:active,
+      &:focus
+        border-color: $c-input-border
+
+  :global(.rc-slider-rail)
+    background-color: $c-input-border
+
+  :global(.rc-slider-track)
+    background-color: lighten($c-active-blue, 10)
+
+  :global(.rc-slider-handle)
+    margin-top: -6px
+    border: solid 2px lighten($c-active-blue, 5)
+    width: 16px
+    height: 16px
+
+    &:hover,
+    &:active,
+    &:focus
+      border-color: $c-active-blue
+
+  :global(.rc-slider-dot)
+    border: solid 2px $c-input-border
+
+  :global(.rc-slider-dot.rc-slider-dot-active)
+    border-color: lighten($c-active-blue, 5)

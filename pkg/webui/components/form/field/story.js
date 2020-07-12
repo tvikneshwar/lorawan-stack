@@ -25,6 +25,7 @@ import Radio from '@ttn-lw/components/radio-button'
 import Select from '@ttn-lw/components/select'
 import FileInput from '@ttn-lw/components/file-input'
 import UnitInput from '@ttn-lw/components/unit-input'
+import Slider from '@ttn-lw/components/slider'
 
 import Yup from '@ttn-lw/lib/yup'
 
@@ -889,7 +890,7 @@ storiesOf('Fields/FileInput', module)
     </FieldsWrapperExample>
   ))
 
-storiesOf('Fields/UnitInput', module)
+storiesOf('Fields/Slider', module)
   .addDecorator((story, context) => withInfo(info)(story)(context))
   .add('Horizontal', () => (
     <FieldsWrapperExample
@@ -1016,5 +1017,103 @@ storiesOf('Fields/UnitInput', module)
         component={UnitInput}
         error="There was an error"
       />
+    </FieldsWrapperExample>
+  ))
+
+storiesOf('Fields/Slider', module)
+  .addDecorator((story, context) => withInfo(info)(story)(context))
+  .add('Horizontal', () => (
+    <FieldsWrapperExample
+      initialValues={{
+        default: 10,
+        description: 10,
+        warning: 10,
+        error: 10,
+        disabled: 10,
+      }}
+    >
+      <Form.Field name="default" title="Default" component={Slider} />
+      <Form.Field
+        name="description"
+        title="With Description"
+        description="A slider field."
+        component={Slider}
+      />
+      <Form.Field name="error" title="With Error" error="There was an error." component={Slider} />
+      <Form.Field
+        name="warning"
+        title="With Warning"
+        warning="A select field."
+        component={Slider}
+      />
+      <Form.Field name="disabled" title="Disabled" disabled component={Slider} />
+    </FieldsWrapperExample>
+  ))
+  .add('Vertical', () => (
+    <FieldsWrapperExample
+      initialValues={{
+        default: 10,
+        description: 10,
+        warning: 10,
+        error: 10,
+        disabled: 10,
+      }}
+      horizontal={false}
+    >
+      <Form.Field name="default" title="Default" component={Slider} />
+      <Form.Field
+        name="description"
+        title="With Description"
+        description="A slider field."
+        component={Slider}
+      />
+      <Form.Field name="error" title="With Error" error="There was an error." component={Slider} />
+      <Form.Field
+        name="warning"
+        title="With Warning"
+        warning="A select field."
+        component={Slider}
+      />
+      <Form.Field name="disabled" title="Disabled" disabled component={Slider} />
+    </FieldsWrapperExample>
+  ))
+  .add('With dots', () => (
+    <FieldsWrapperExample
+      initialValues={{
+        default: 20,
+        description: 20,
+        warning: 20,
+        error: 20,
+        disabled: 20,
+      }}
+      horizontal={false}
+    >
+      <Form.Field dots step={10} name="default" title="Default" component={Slider} />
+      <Form.Field
+        dots
+        step={10}
+        name="description"
+        title="With Description"
+        description="A slider field."
+        component={Slider}
+      />
+      <Form.Field
+        dots
+        step={10}
+        min={10}
+        name="error"
+        title="With Error"
+        error="There was an error."
+        component={Slider}
+      />
+      <Form.Field
+        dots
+        step={10}
+        name="warning"
+        title="With Warning"
+        warning="A select field."
+        component={Slider}
+      />
+      <Form.Field dots step={10} name="disabled" title="Disabled" disabled component={Slider} />
     </FieldsWrapperExample>
   ))
