@@ -25,10 +25,8 @@ as:
 
 or use `--as.webhooks.templates.directory` command line option when running {{% tts %}} instead.
 
-Go to the Console and select **Webhooks** tab in **Integrations** menu. Click the **Add webhook** button and you will see your template is successfully added.
+Go to the Console and select **Webhooks** tab in **Integrations** menu. Click the **Add webhook** button and you will see your template. At this point, you can test your webhook template.
 
 {{< figure src="../adding-webhook-template.png" alt="Webhook template successfully added" >}}
-
-At this point, you can test your webhook template by [instantiating]({{< ref "/integrations/webhooks/webhook-templates/instantiation.md" >}}) it.
 
 To make your webhook template available in most deployments when the next version is deployed, open a pull request on the [`lorawan-webhook-templates` Github repository](https://github.com/TheThingsNetwork/lorawan-webhook-templates/).
