@@ -6,13 +6,15 @@ weight: 4
 
 {{% tts %}} uses webhook templates from the [`lorawan-webhook-templates` Github repository](https://github.com/TheThingsNetwork/lorawan-webhook-templates/).
 
-Once you have created a new webhook template with a proper [format]({{< ref "/integrations/webhooks/webhook-templates/format.md" >}}), you can easily build it locally by following next steps:
+Once you have created a new webhook template with a proper [format]({{< ref "/integrations/webhooks/webhook-templates/format.md" >}}), you can easily test it locally by following next steps:
 
 1. Clone the [`lorawan-webhook-templates` Github repository](https://github.com/TheThingsNetwork/lorawan-webhook-templates/) to a local folder.
 
 2. Store your webhook template in previously mentioned folder.
 
-3. Update your {{% tts %}} configuration by adding following lines:
+3. Include your webhook template in the `templates.yml` file.
+
+4. Update your {{% tts %}} configuration by adding following lines:
 
 ```yaml
 as:
@@ -20,6 +22,12 @@ as:
     templates:
       directory: "path-to-the-folder-containing-your-webhook-template"
 ```
+
+or use `--as.webhooks.templates.directory` command line option when running {{% tts %}} instead.
+
+Go to the Console and select **Webhooks** tab in **Integrations** menu. Click the **Add webhook** button and you will see your template is successfully added.
+
+{{< figure src="../adding-webhook-template.png" alt="Webhook template successfully added" >}}
 
 At this point, you can test your webhook template by [instantiating]({{< ref "/integrations/webhooks/webhook-templates/instantiation.md" >}}) it.
 
