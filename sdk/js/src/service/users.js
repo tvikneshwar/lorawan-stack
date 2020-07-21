@@ -91,6 +91,16 @@ class Users {
     )
     return Marshaler.unwrapUser(response)
   }
+
+  async create(user) {
+    const response = await this._api.UserRegistry.Create(
+      undefined,
+      {
+        user: user,
+      },
+    )
+    return Marshaler.unwrapUser(response)
+  }
 }
 
 export default Users
