@@ -28,7 +28,6 @@ export default defineMessages({
   addGateway: 'Add gateway',
   addOrganization: 'Add organization',
   addPubsub: 'Add Pub/Sub',
-  addUser: 'Add user',
   address: 'Address',
   addressPlaceholder: 'host',
   addWebhook: 'Add webhook',

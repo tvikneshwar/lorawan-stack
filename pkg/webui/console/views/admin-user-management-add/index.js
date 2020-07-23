@@ -27,6 +27,7 @@ import Breadcrumb from '@ttn-lw/components/breadcrumbs/breadcrumb'
 import UserDataForm from '@console/components/user-data-form'
 
 import sharedMessages from '@ttn-lw/lib/shared-messages'
+import { getUserId } from '@ttn-lw/lib/selectors/id'
 import PropTypes from '@ttn-lw/lib/prop-types'
 
 import { createUser } from '@console/store/actions/users'
@@ -34,14 +35,13 @@ import { attachPromise } from '@console/store/actions/lib'
 
 const m = defineMessages({
   createSuccess: 'User created',
-  createFailure: 'Error creating user',
 })
 
 @connect(
   undefined,
   {
     createUser: attachPromise(createUser),
-    navigateToList: () => push(`/admin/user-management`),
+    navigateToUser: userId => push(`/admin/user-management/${userId}`),
   },
 )
 @withBreadcrumb('admin.user-management.add', () => {
@@ -50,7 +50,7 @@ const m = defineMessages({
 export default class UserManagementAdd extends Component {
   static propTypes = {
     createUser: PropTypes.func.isRequired,
-    navigateToList: PropTypes.func.isRequired,
+    navigateToUser: PropTypes.func.isRequired,
   }
 
   @bind
@@ -62,24 +62,16 @@ export default class UserManagementAdd extends Component {
 
   @bind
   onSubmitSuccess(response) {
-    const { navigateToList } = this.props
+    const { navigateToUser } = this.props
+    const userId = getUserId(response)
 
     toast({
-      title: response.ids.user_id,
+      title: userId,
       message: m.createSuccess,
       type: toast.types.SUCCESS,
     })
 
-    navigateToList()
-  }
-
-  @bind
-  onSubmitFailure(response) {
-    toast({
-      title: m.createFailure,
-      message: response.message,
-      type: toast.types.ERROR,
-    })
+    navigateToUser(userId)
   }
 
   render() {
@@ -89,16 +81,9 @@ export default class UserManagementAdd extends Component {
         <Row>
           <Col lg={8} md={12}>
             <UserDataForm
-              create
-              error={null}
               onSubmit={this.onSubmit}
               onSubmitSuccess={this.onSubmitSuccess}
               onSubmitFailure={this.onSubmitFailure}
-              initialValues={{
-                ids: { user_id: '' },
-                name: '',
-                description: '',
-              }}
             />
           </Col>
         </Row>

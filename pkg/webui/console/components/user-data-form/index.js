@@ -58,11 +58,16 @@ const validationSchema = Yup.object().shape({
     .oneOf(approvalStates)
     .required(sharedMessages.validateRequired),
   description: Yup.string().max(2000, Yup.passValues(sharedMessages.validateTooLong)),
-  password: Yup.string().required(sharedMessages.validateRequired),
-  confirmPassword: Yup.string()
-    .required(sharedMessages.validateRequired)
-    .oneOf([Yup.ref('password'), null], sharedMessages.validatePasswordMatch),
 })
+
+const passwordValidationSchema = validationSchema.concat(
+  Yup.object().shape({
+    password: Yup.string().required(sharedMessages.validateRequired),
+    confirmPassword: Yup.string()
+      .required(sharedMessages.validateRequired)
+      .oneOf([Yup.ref('password'), null], sharedMessages.validatePasswordMatch),
+  }),
+)
 
 const m = defineMessages({
   adminLabel: 'Administrator',
@@ -79,8 +84,16 @@ const m = defineMessages({
 
 @injectIntl
 class UserForm extends React.Component {
+  constructor(props) {
+    super(props)
+    const { update } = props
+    this.validationSchema = update ? validationSchema : passwordValidationSchema
+    this.state = {
+      error: '',
+    }
+  }
+
   static propTypes = {
-    create: PropTypes.bool,
     error: PropTypes.error,
     initialValues: PropTypes.shape({
       ids: PropTypes.shape({
@@ -88,7 +101,7 @@ class UserForm extends React.Component {
       }).isRequired,
       name: PropTypes.string,
       description: PropTypes.string,
-    }).isRequired,
+    }),
     intl: PropTypes.shape({
       formatMessage: PropTypes.func.isRequired,
     }).isRequired,
@@ -98,11 +111,19 @@ class UserForm extends React.Component {
     onSubmit: PropTypes.func.isRequired,
     onSubmitFailure: PropTypes.func,
     onSubmitSuccess: PropTypes.func,
+    update: PropTypes.bool,
   }
 
   static defaultProps = {
-    create: false,
+    update: false,
     error: '',
+    initialValues: {
+      ids: { user_id: '' },
+      name: '',
+      description: '',
+      password: '',
+      confirmPassword: '',
+    },
     onSubmitFailure: () => null,
     onSubmitSuccess: () => null,
     onDelete: () => null,
@@ -114,13 +135,14 @@ class UserForm extends React.Component {
   async handleSubmit(values, { resetForm, setSubmitting }) {
     const { onSubmit, onSubmitSuccess, onSubmitFailure } = this.props
     const castedValues = validationSchema.cast(values)
-
+    await this.setState({ error: '' })
     try {
       const result = await onSubmit(castedValues)
-      onSubmitSuccess(result)
       resetForm({ values })
+      onSubmitSuccess(result)
     } catch (error) {
       setSubmitting(false)
+      this.setState({ error })
       onSubmitFailure(error)
     }
   }
@@ -139,8 +161,8 @@ class UserForm extends React.Component {
 
   render() {
     const {
-      create,
-      error,
+      update,
+      error: passedError,
       initialValues: values,
       intl: { formatMessage },
     } = this.props
@@ -155,18 +177,23 @@ class UserForm extends React.Component {
       ...values,
     }
 
+    const { error: submitError } = this.state
+
+    const error = passedError || submitError
+
     return (
       <Form
         error={error}
         onSubmit={this.handleSubmit}
         initialValues={initialValues}
-        validationSchema={validationSchema}
+        validationSchema={this.validationSchema}
       >
         <Form.Field
           title={sharedMessages.userId}
           name="ids.user_id"
           component={Input}
-          disabled={!create}
+          disabled={update}
+          autoFocus={!update}
           required
         />
         <Form.Field
@@ -196,6 +223,7 @@ class UserForm extends React.Component {
           name="state"
           component={Select}
           options={approvalStateOptions}
+          required
         />
         <Form.Field
           title={sharedMessages.admin}
@@ -203,7 +231,7 @@ class UserForm extends React.Component {
           component={Checkbox}
           label={m.adminLabel}
         />
-        {create && (
+        {!update && (
           <Form.Field
             title={sharedMessages.password}
             component={Input}
@@ -213,7 +241,7 @@ class UserForm extends React.Component {
             required
           />
         )}
-        {create && (
+        {!update && (
           <Form.Field
             title={sharedMessages.confirmPassword}
             component={Input}
@@ -225,10 +253,10 @@ class UserForm extends React.Component {
         )}
         <SubmitBar>
           <Form.Submit
-            message={create ? sharedMessages.userAdd : sharedMessages.saveChanges}
+            message={update ? sharedMessages.saveChanges : sharedMessages.userAdd}
             component={SubmitButton}
           />
-          {!create && (
+          {update && (
             <ModalButton
               type="button"
               icon="delete"
