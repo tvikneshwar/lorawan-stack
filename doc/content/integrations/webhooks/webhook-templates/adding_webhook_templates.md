@@ -10,11 +10,11 @@ Once you have created a new webhook template with a proper [format]({{< ref "/in
 
 1. Clone the [`lorawan-webhook-templates` Github repository](https://github.com/TheThingsNetwork/lorawan-webhook-templates/) to a local folder.
 
-2. Store your webhook template in previously mentioned folder.
+2. Store your webhook template in the previously mentioned folder.
 
 3. Include your webhook template in the `templates.yml` file.
 
-4. Update your {{% tts %}} configuration by adding following lines:
+4. Update your {{% tts %}} configuration file by adding following lines:
 
 ```yaml
 as:
