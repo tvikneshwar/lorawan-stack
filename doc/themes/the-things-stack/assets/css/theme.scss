@@ -101,7 +101,7 @@ $table-cell-padding: 1.2em 0.75em;
 @import "bulma/sass/components/navbar.sass";
 // @import "bulma/sass/components/pagination.sass";
 // @import "bulma/sass/components/panel.sass";
-// @import "bulma/sass/components/tabs.sass";
+@import "bulma/sass/components/tabs.sass";
 
 // @import "bulma/sass/grid/_all";
 @import "bulma/sass/grid/columns.sass";
@@ -283,6 +283,14 @@ details + blockquote {
   line-height: 0;
   padding-left: 0.3em;
   padding-right: 0.3em;
+}
+
+#tab-content section {
+  display: none;
+}
+
+#tab-content section.is-active {
+  display: block;
 }
 
 @import "highlight.scss";

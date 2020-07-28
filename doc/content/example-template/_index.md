@@ -2,7 +2,7 @@
 title: "Draft Template"
 description: "This page is a draft template"
 weight: 
-draft: true
+draft: false
 ---
 
 Guidelines here are taken from [DEVELOPMENT.md](https://github.com/TheThingsNetwork/lorawan-stack/blob/default/DEVELOPMENT.md), which you should read. This template exists as a copy and paste starting point for new documentation. Remove the `draft`key in the Front Matter to generate the page (otherwise hugo will skip it).
@@ -55,6 +55,22 @@ Screenshots should be inserted using the figure shortcode:
 To render images without styling, use standard markdown syntax:
 
 ![I am a picture of Wienke](wienke.jpeg)
+
+## Console and CLI Tabs
+
+To separate instructions for the console and CLI, use the `tabs/container` shortcode, with nested `tabs/console` and `tabs/cli` shortcodes, to produce a tabbed view.
+
+{{< tabs/container >}}
+
+{{< tabs/console >}}
+## These are console instructions
+{{< /tabs/console >}}
+
+{{< tabs/cli >}}
+These are **cli**
+{{< /tabs/cli >}}
+
+{{< /tabs/container >}}
 
 ## Shortcodes
 
