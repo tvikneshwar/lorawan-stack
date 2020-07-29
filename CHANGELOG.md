@@ -62,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Application Server contacting Join Server via interop for fetching the AppSKey.
 - Low color contrast situations in the Console.
 - Application Server pub/sub integrations race condition during shutdown.
+- Gateway Server could include the gateway antenna location on messages forwarded to the Network Server even if the gateway location was not public.
 
 ### Security
 
