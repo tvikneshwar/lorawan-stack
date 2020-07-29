@@ -25,7 +25,7 @@ headers:
 
 If the user has filled in the value of `token` with `Zpdc7jWMvYzVTeNQ`, then the resulting webhook will contain a header named `Authorization` with the value `Bearer Zpdc7jWMvYzVTeNQ`.
 
-If the header value needs to contain just `token`, then define the header as:
+Keep in mind that if you need to use a field directly as header value, you should wrap it with hyphens as follows:
 
 ```yaml
 - Authorization: "{token}"
