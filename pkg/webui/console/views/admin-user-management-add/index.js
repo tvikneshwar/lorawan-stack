@@ -16,10 +16,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, Col, Row } from 'react-grid-system'
 import bind from 'autobind-decorator'
-import { defineMessages } from 'react-intl'
 import { push } from 'connected-react-router'
 
-import toast from '@ttn-lw/components/toast'
 import PageTitle from '@ttn-lw/components/page-title'
 import { withBreadcrumb } from '@ttn-lw/components/breadcrumbs/context'
 import Breadcrumb from '@ttn-lw/components/breadcrumbs/breadcrumb'
@@ -27,21 +25,16 @@ import Breadcrumb from '@ttn-lw/components/breadcrumbs/breadcrumb'
 import UserDataForm from '@console/components/user-data-form'
 
 import sharedMessages from '@ttn-lw/lib/shared-messages'
-import { getUserId } from '@ttn-lw/lib/selectors/id'
 import PropTypes from '@ttn-lw/lib/prop-types'
 
 import { createUser } from '@console/store/actions/users'
 import { attachPromise } from '@console/store/actions/lib'
 
-const m = defineMessages({
-  createSuccess: 'User created',
-})
-
 @connect(
   undefined,
   {
     createUser: attachPromise(createUser),
-    navigateToUser: userId => push(`/admin/user-management/${userId}`),
+    navigateToList: () => push(`/admin/user-management/`),
   },
 )
 @withBreadcrumb('admin.user-management.add', () => {
@@ -50,7 +43,7 @@ const m = defineMessages({
 export default class UserManagementAdd extends Component {
   static propTypes = {
     createUser: PropTypes.func.isRequired,
-    navigateToUser: PropTypes.func.isRequired,
+    navigateToList: PropTypes.func.isRequired,
   }
 
   @bind
@@ -62,16 +55,9 @@ export default class UserManagementAdd extends Component {
 
   @bind
   onSubmitSuccess(response) {
-    const { navigateToUser } = this.props
-    const userId = getUserId(response)
+    const { navigateToList } = this.props
 
-    toast({
-      title: userId,
-      message: m.createSuccess,
-      type: toast.types.SUCCESS,
-    })
-
-    navigateToUser(userId)
+    navigateToList()
   }
 
   render() {

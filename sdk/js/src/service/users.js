@@ -93,12 +93,9 @@ class Users {
   }
 
   async create(user) {
-    const response = await this._api.UserRegistry.Create(
-      undefined,
-      {
-        user: user,
-      },
-    )
+    const response = await this._api.UserRegistry.Create(undefined, {
+      user,
+    })
     return Marshaler.unwrapUser(response)
   }
 }
