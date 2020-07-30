@@ -28,7 +28,14 @@ If the user has filled in the value of `token` with `Zpdc7jWMvYzVTeNQ`, then the
 Keep in mind that if you need to use a field directly as header value, you should wrap it with hyphens as follows:
 
 ```yaml
+headers:
 - Authorization: "{token}"
+```
+
+If the webhook template is to be defined without header entries, define the `headers` field as follows:
+
+```yaml
+headers: {}
 ```
 
 ## Instantiation of URLs and Paths
